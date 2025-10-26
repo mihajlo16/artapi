@@ -19,7 +19,10 @@ public class Cache
     public string? GetOrAdd(string key, Func<string> valueFactory)
     {
         if (_cache.TryGetValue(key, out string? existing))
+        {
+            Logger.Info($"Value returned from cache for key: {key}");
             return existing;
+        }
 
         var keyLock = _keyLocks.GetOrAdd(key, _ => new object());
 
@@ -40,7 +43,7 @@ public class Cache
                 });
 
             _keyLocks.TryRemove(key, out _);
-            Logger.Info($"Cached (GetOrAdd): {key}");
+            Logger.Info($"Value added to cache for key: {key}");
 
             return newValue;
         }
