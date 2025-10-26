@@ -16,7 +16,10 @@ public class Cache
     public async Task<string?> GetOrAddAsync(string key, Func<Task<string>> factory)
     {
         if (_cache.TryGetValue(key, out string? cached))
+        {
+            Logger.Info($"Return value from cache for key: {key}");
             return cached;
+        }
 
         var pending = _inProgress.GetOrAdd(key, _ => CreateAndCacheAsync(key, factory));
         try
@@ -42,7 +45,7 @@ public class Cache
                 Size = 1
             });
 
-        Logger.Info($"Cached: {key}");
+        Logger.Info($"Cached value for key: {key}");
         return result;
     }
 }
