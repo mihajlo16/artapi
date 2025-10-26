@@ -112,7 +112,7 @@ internal static class WebAPI
                 return;
             }
 
-            string cacheKey = $"author={author}";
+            string cacheKey = $"author={author}".ToLower();
             string apiUrl = $"{BaseApiUrl}{author}";
 
             string? response = await cache.GetOrAddAsync(cacheKey, async () =>
